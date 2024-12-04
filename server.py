@@ -4,10 +4,8 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
- 
 CORS(app)
 
- 
 client = Groq(api_key="(fill your api key here)")
 
 @app.route('/generate-recipe', methods=['POST'])
