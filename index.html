@@ -9,10 +9,11 @@
 <body>
     <div class="chatbox">
         <div class="chat-header">
-            <h3>FoodGenie</h3>
+            <h3>🍳 FoodGenie</h3>
+            <p>Your culinary companion, 24/7!</p>
         </div>
         <div class="chat-body" id="chat-body">
-            <div class="message bot-message">
+            <div class="message bot-message typing-indicator">
                 Hi! I'm FoodGenie. How can I assist you today?
             </div>
         </div>
@@ -24,6 +25,12 @@
                 onkeydown="sendMessage(event)"
             />
             <button id="send-btn" onclick="sendButton()">Send</button>
+            <button id="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
+        </div>
+        <div class="quick-replies">
+            <button onclick="appendQuickMessage('Show me recipes')">Show me recipes</button>
+            <button onclick="appendQuickMessage('Healthy options')">Healthy options</button>
+            <button onclick="appendQuickMessage('Quick meals')">Quick meals</button>
         </div>
     </div>
 
@@ -34,42 +41,41 @@
         function sendMessage(event) {
             if (event.key === "Enter") {
                 appendMessage(chatInput.value);
-                sendToGroqAPI(chatInput.value); 
-                chatInput.value = ""; 
+                sendToGroqAPI(chatInput.value);
+                chatInput.value = "";
             }
         }
 
         function sendButton() {
             appendMessage(chatInput.value);
-            sendToGroqAPI(chatInput.value); 
-            chatInput.value = ""; 
+            sendToGroqAPI(chatInput.value);
+            chatInput.value = "";
         }
- 
+
         function appendMessage(message) {
             if (message.trim() !== "") {
                 const userMessage = document.createElement("div");
                 userMessage.classList.add("message", "user-message");
                 userMessage.textContent = message;
                 chatBody.appendChild(userMessage);
-                chatBody.scrollTop = chatBody.scrollHeight;  
+                chatBody.scrollTop = chatBody.scrollHeight;
             }
         }
 
-         
         function sendToGroqAPI(message) {
-            fetch('http://127.0.0.1:5000/generate-recipe', {   
+            fetch('http://127.0.0.1:5000/generate-recipe', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',  
-                    'Authorization': 'Bearer YOUR_API_KEY'   
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer YOUR_API_KEY'
                 },
                 body: JSON.stringify({
-                    message: message  
+                    message: message
                 })
             })
             .then(response => response.json())
             .then(data => {
-                appendBotResponse(data.response);    
+                appendBotResponse(data.response);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -77,15 +83,23 @@
             });
         }
 
-         
         function appendBotResponse(response) {
             setTimeout(() => {
                 const botMessage = document.createElement("div");
                 botMessage.classList.add("message", "bot-message");
                 botMessage.textContent = response;
                 chatBody.appendChild(botMessage);
-                chatBody.scrollTop = chatBody.scrollHeight;  
+                chatBody.scrollTop = chatBody.scrollHeight;
             }, 1000);
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        function appendQuickMessage(message) {
+            appendMessage(message);
+            sendToGroqAPI(message);
         }
     </script>
 </body>
