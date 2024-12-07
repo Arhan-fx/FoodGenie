@@ -1,4 +1,4 @@
-# FoodGenie(Inspired by my wish
+# FoodGenie(Inspired by my dream to make life easier)
 It is an AI based website which generates you food recipe according to you requirement also it can create recipe according to your budget also! used GROQ service to implemet AI (Yall love it, try it once)
 Made this more smooth and optimised also learned something new :)
 Updates:
